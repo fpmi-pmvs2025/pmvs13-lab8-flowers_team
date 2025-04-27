@@ -2,8 +2,7 @@ package bsu.pi_13.flowers_team.feature.auth.view_model
 
 import android.content.Context
 import androidx.compose.runtime.*
-import androidx.navigation.NavController
-import bsu.pi_13.flowers_team.data.DatabaseHelper
+import bsu.pi_13.flowers_team.data.db.DatabaseHelper
 
 class LoginViewModel(
     private val dbHelper: DatabaseHelper,
@@ -17,33 +16,33 @@ class LoginViewModel(
     private val sharedPreferences = context.getSharedPreferences("user_prefs", Context.MODE_PRIVATE)
     private val editor = sharedPreferences.edit()
 
-    fun loginUser() {
+    suspend fun loginUser(): Boolean {
         if (login.isBlank() || password.isBlank()) {
-            errorMessage = "Please enter both login and password"
-            return
+            errorMessage = "Пожалуйста, введите логин и пароль"
+            return false
         }
 
         isLoading = true
         errorMessage = ""
 
-        try {
+        return try {
             dbHelper.open()
-            val isAuthenticated = dbHelper.authenticateUser(login, password)
+            val isAuthenticated = dbHelper.userRepository.authenticateUser(login, password)
             if (isAuthenticated) {
                 editor.putBoolean("isLoggedIn", true)
                 editor.apply()
-
+                true
             } else {
-                errorMessage = "Invalid login or password"
+                errorMessage = "Неверный логин или пароль"
+                false
             }
         } catch (e: Exception) {
-            errorMessage = "Login error. Please try again."
-            e.printStackTrace()
+            errorMessage = "Ошибка входа. Пожалуйста, попробуйте снова."
+            false
         } finally {
             dbHelper.close()
             isLoading = false
         }
     }
-
 
 }

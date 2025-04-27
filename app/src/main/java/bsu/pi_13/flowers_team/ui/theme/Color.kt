@@ -1,11 +1,15 @@
 package bsu.pi_13.flowers_team.ui.theme
-
 import androidx.compose.ui.graphics.Color
 
-val Purple80 = Color(0xFFD0BCFF)
-val PurpleGrey80 = Color(0xFFCCC2DC)
-val Pink80 = Color(0xFFEFB8C8)
+val MilkBackground = Color(0xFFFAF5EF)
+val SoftPink = Color(0xFFF8D7E6)
+val SoftGreen = Color(0xFFD7E8D5)
+val DarkPink = Color(0xFFE8A0BF)
+val DarkGreen = Color(0xFFA0C49D)
 
-val Purple40 = Color(0xFF6650a4)
-val PurpleGrey40 = Color(0xFF625b71)
-val Pink40 = Color(0xFF7D5260)
+val LightTextColor = Color(0xFF5D5D5D)
+val DarkTextColor = Color(0xFF333333)
+
+val ErrorRed = Color(0xFFE57373)
+val SuccessGreen = Color(0xFF81C784)
+val WarningYellow = Color(0xFFFFD54F)
