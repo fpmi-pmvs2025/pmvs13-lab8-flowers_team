@@ -8,17 +8,17 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavController
-import bsu.pi_13.flowers_team.data.DatabaseHelper
+import bsu.pi_13.flowers_team.data.db.DatabaseHelper
 
 @Composable
 fun RegisterScreen(navController: NavController, dbHelper: DatabaseHelper) {
     val context = LocalContext.current
     val viewModel = remember { RegisterViewModel(dbHelper, context) }
-    val pinkBackground = Color(0xFFF8BBD0)
+   // val pinkBackground = Color(0xFFF8BBD0)
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(pinkBackground) 
+
     )
     {
         RegisterContent(

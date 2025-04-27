@@ -9,10 +9,10 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import bsu.pi_13.flowers_team.data.DatabaseHelper
+import bsu.pi_13.flowers_team.data.db.DatabaseHelper
 
 
-import bsu.pi_13.flowers_team.screens.MainScreen
+import bsu.pi_13.flowers_team.feature.home.screen.MainScreen
 @Composable
 fun AppNavigation() {
     val navController = rememberNavController()
@@ -36,20 +36,32 @@ fun AppNavigation() {
         composable(Screen.Login.route) {
             LoginScreen(
                 navController = navController,
-                dbHelper = DatabaseHelper(LocalContext.current)
+                dbHelper = DatabaseHelper(
+                    LocalContext.current
+                )
             )
         }
 
         composable(Screen.Register.route) {
             RegisterScreen(
                 navController = navController,
-                dbHelper = DatabaseHelper(LocalContext.current),
+                dbHelper = DatabaseHelper(
+                    LocalContext.current
+                ),
 
             )
         }
 
         composable(Screen.Main.route) {
-            MainScreen()
+
+            MainScreen(navController = navController,
+                onLogout = {
+
+                    sharedPreferences.edit().putBoolean("isLoggedIn", false).apply()
+                    navController.navigate(Screen.Login.route) {
+                        popUpTo(0) // Очистка всего back stack
+                    }
+                })
         }
     }
 }
