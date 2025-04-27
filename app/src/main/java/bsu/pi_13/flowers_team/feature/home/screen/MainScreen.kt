@@ -18,9 +18,9 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import bsu.pi_13.flowers_team.data.db.DatabaseHelper
-import bsu.pi_13.flowers_team.feature.basket.CartScreen
+//import bsu.pi_13.flowers_team.feature.basket.CartScreen
 import bsu.pi_13.flowers_team.feature.flower.FlowerScreen
-import bsu.pi_13.flowers_team.feature.profile.ProfileScreen
+//import bsu.pi_13.flowers_team.feature.profile.ProfileScreen
 import bsu.pi_13.flowers_team.data.model.Flower
 import bsu.pi_13.flowers_team.feature.home.component.LoadingIndicator
 import bsu.pi_13.flowers_team.ui.theme.DarkGreen
@@ -182,17 +182,17 @@ fun MainScreen(navController: NavController, onLogout: () -> Unit) {
                         )
                     }
                 }
-                is Screen.Cart -> {
-                    CartScreen(
-                        cartItems = cartItems,
-                        onRemoveItem = ::removeFromCart
-                    )
-                }
-                is Screen.Profile -> {
-                    ProfileScreen(
-                        onLogoutClick = onLogout
-                    )
-                }
+//                is Screen.Cart -> {
+//                    CartScreen(
+//                        cartItems = cartItems,
+//                        onRemoveItem = ::removeFromCart
+//                    )
+//                }
+//                is Screen.Profile -> {
+//                    ProfileScreen(
+//                        onLogoutClick = onLogout
+//                    )
+             }
             }
         }
     }
