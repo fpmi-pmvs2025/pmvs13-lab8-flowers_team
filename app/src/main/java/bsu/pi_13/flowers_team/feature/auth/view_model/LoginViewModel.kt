@@ -28,8 +28,10 @@ class LoginViewModel(
         return try {
             dbHelper.open()
             val isAuthenticated = dbHelper.userRepository.authenticateUser(login, password)
+            val userId = dbHelper.userRepository.getUserIdByLogin(login)
             if (isAuthenticated) {
                 editor.putBoolean("isLoggedIn", true)
+                editor.putInt("current_user_id", userId)
                 editor.apply()
                 true
             } else {
