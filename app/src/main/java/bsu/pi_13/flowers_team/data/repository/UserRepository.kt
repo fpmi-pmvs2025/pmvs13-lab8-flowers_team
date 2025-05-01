@@ -2,6 +2,7 @@ package bsu.pi_13.flowers_team.data.repository
 import android.content.ContentValues
 import android.database.sqlite.SQLiteDatabase
 import bsu.pi_13.flowers_team.data.db.DBHelper
+import bsu.pi_13.flowers_team.data.db.DBHelper.TABLE_USERS
 
 
 class UserRepository(private val database: SQLiteDatabase) {
@@ -43,5 +44,20 @@ class UserRepository(private val database: SQLiteDatabase) {
         values.put("role", "S")
 
         return database.insert(DBHelper.TABLE_USERS, null, values) != -1L
+    }
+
+    fun getUserIdByLogin(login: String): Int {
+        val cursor = database.query(
+            TABLE_USERS,
+            arrayOf("id"),
+            "login = ?",
+            arrayOf(login),
+            null, null, null
+        )
+        return if (cursor.moveToFirst()) {
+            cursor.getInt(0)
+        } else {
+            -1
+        }.also { cursor.close() }
     }
 }

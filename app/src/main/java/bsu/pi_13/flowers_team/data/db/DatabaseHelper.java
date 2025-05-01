@@ -5,6 +5,7 @@ import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 
 import bsu.pi_13.flowers_team.data.repository.FlowerRepository;
+import bsu.pi_13.flowers_team.data.repository.OrderRepository;
 import bsu.pi_13.flowers_team.data.repository.UserRepository;
 
 public class DatabaseHelper {
@@ -13,6 +14,7 @@ public class DatabaseHelper {
 
     private UserRepository userRepository;
     private FlowerRepository flowerRepository;
+    private OrderRepository orderRepository;
 
     public DatabaseHelper(Context context) {
         dbHelper = new DBHelper(context);
@@ -22,6 +24,7 @@ public class DatabaseHelper {
         database = dbHelper.getWritableDatabase();
         userRepository = new UserRepository(database);
         flowerRepository = new FlowerRepository(database);
+        orderRepository = new OrderRepository(database);
     }
 
     public void close() {
@@ -34,5 +37,8 @@ public class DatabaseHelper {
 
     public FlowerRepository getFlowerRepository() {
         return flowerRepository;
+    }
+    public OrderRepository getOrderRepository() {
+        return orderRepository;
     }
 }
