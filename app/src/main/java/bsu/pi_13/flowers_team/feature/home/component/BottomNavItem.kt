@@ -9,7 +9,7 @@ import bsu.pi_13.flowers_team.feature.home.screen.Screen
 
 sealed class BottomNavItem(val title: String, val icon: ImageVector, val screen: Screen) {
     object Catalog : BottomNavItem("Каталог", Icons.Default.Home, Screen.Catalog)
-    object Cart : BottomNavItem("Корзина", Icons.Default.ShoppingCart, Screen.Cart)
+    object Cart : BottomNavItem("Корзина", Icons.Default.ShoppingCart, Screen.Basket)
     object Profile : BottomNavItem("Профиль", Icons.Default.AccountCircle, Screen.Profile)
 }
 
