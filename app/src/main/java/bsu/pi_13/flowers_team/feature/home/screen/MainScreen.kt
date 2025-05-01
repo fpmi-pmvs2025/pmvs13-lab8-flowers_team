@@ -18,13 +18,12 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import bsu.pi_13.flowers_team.data.db.DatabaseHelper
-//import bsu.pi_13.flowers_team.feature.basket.CartScreen
 import bsu.pi_13.flowers_team.feature.flower.FlowerScreen
-//import bsu.pi_13.flowers_team.feature.profile.ProfileScreen
 import bsu.pi_13.flowers_team.data.model.Flower
 import bsu.pi_13.flowers_team.feature.basket.screen.BasketScreen
+import bsu.pi_13.flowers_team.feature.home.component.EmptyState
 import bsu.pi_13.flowers_team.feature.home.component.LoadingIndicator
-import bsu.pi_13.flowers_team.feature.profile.ProfileScreen
+import bsu.pi_13.flowers_team.feature.profile.screen.ProfileScreen
 import bsu.pi_13.flowers_team.ui.theme.DarkGreen
 import bsu.pi_13.flowers_team.ui.theme.DarkPink
 
@@ -43,7 +42,7 @@ fun MainScreen(navController: NavController, onLogout: () -> Unit) {
     var currentScreen by remember { mutableStateOf<Screen>(Screen.Catalog) }
     var expandedFlowerId by remember { mutableStateOf<Int?>(null) }
     val sharedPreferences = context.getSharedPreferences("user_prefs", Context.MODE_PRIVATE)
-    val currentUserId = sharedPreferences.getInt("current_user_id", -1) // -1 если не авторизован
+    val currentUserId = sharedPreferences.getInt("current_user_id", -1)
 
 
     LaunchedEffect(Unit) {
@@ -209,29 +208,17 @@ fun MainScreen(navController: NavController, onLogout: () -> Unit) {
                 }
                 is Screen.Profile -> {
                     ProfileScreen(
-                        onLogoutClick = onLogout
+                        userId = currentUserId,
+                        onLogoutClick = onLogout,
+
                     )
-             }
+                }
+
+
             }
         }
     }
 }
-
-@Composable
-private fun EmptyState() {
-    Box(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(MilkBackground),
-        contentAlignment = Alignment.Center
-    ) {
-        Text(
-            "Цветы не найдены",
-            style = MaterialTheme.typography.bodyLarge.copy(color = LightTextColor)
-        )
-    }
-}
-
 
 sealed class Screen {
     object Catalog : Screen()
