@@ -69,4 +69,14 @@ dependencies {
 
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
+
+    implementation (libs.material3)
+    implementation (libs.androidx.material3.v132)
+
+    implementation (libs.retrofit)
+    implementation (libs.converter.gson)
+    implementation (libs.okhttp)
+
+    implementation (libs.logging.interceptor)
+    implementation (libs.coil.compose)
 }
