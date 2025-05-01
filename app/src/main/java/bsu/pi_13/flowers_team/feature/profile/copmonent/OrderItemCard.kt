@@ -37,7 +37,7 @@ fun OrderItemCard(order: Order) {
                 .padding(16.dp)
         ) {
             Text(
-                text = "Заказ #${order.id}",
+                text = "Заказ номер ${order.id}",
                 style = MaterialTheme.typography.titleMedium,
                 color = DarkPink
             )
@@ -47,7 +47,7 @@ fun OrderItemCard(order: Order) {
             )
             Spacer(modifier = Modifier.height(8.dp))
             Text(
-                text = "Статус: ${order.status}",
+                text = "Статус: новый",
                 style = MaterialTheme.typography.bodyMedium
             )
             Text(
