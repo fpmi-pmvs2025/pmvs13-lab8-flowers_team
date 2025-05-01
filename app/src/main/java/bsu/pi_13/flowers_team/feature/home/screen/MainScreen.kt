@@ -1,5 +1,6 @@
 package bsu.pi_13.flowers_team.feature.home.screen
 
+import android.content.Context
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
@@ -11,7 +12,6 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -22,7 +22,9 @@ import bsu.pi_13.flowers_team.data.db.DatabaseHelper
 import bsu.pi_13.flowers_team.feature.flower.FlowerScreen
 //import bsu.pi_13.flowers_team.feature.profile.ProfileScreen
 import bsu.pi_13.flowers_team.data.model.Flower
+import bsu.pi_13.flowers_team.feature.basket.screen.BasketScreen
 import bsu.pi_13.flowers_team.feature.home.component.LoadingIndicator
+import bsu.pi_13.flowers_team.feature.profile.ProfileScreen
 import bsu.pi_13.flowers_team.ui.theme.DarkGreen
 import bsu.pi_13.flowers_team.ui.theme.DarkPink
 
@@ -40,6 +42,9 @@ fun MainScreen(navController: NavController, onLogout: () -> Unit) {
     var isLoading by remember { mutableStateOf(true) }
     var currentScreen by remember { mutableStateOf<Screen>(Screen.Catalog) }
     var expandedFlowerId by remember { mutableStateOf<Int?>(null) }
+    val sharedPreferences = context.getSharedPreferences("user_prefs", Context.MODE_PRIVATE)
+    val currentUserId = sharedPreferences.getInt("current_user_id", -1) // -1 если не авторизован
+
 
     LaunchedEffect(Unit) {
         val dbHelper = DatabaseHelper(context)
@@ -121,18 +126,18 @@ fun MainScreen(navController: NavController, onLogout: () -> Unit) {
                             Icon(
                                 Icons.Default.ShoppingCart,
                                 contentDescription = "Корзина",
-                                tint = if (currentScreen == Screen.Cart) DarkGreen else LightTextColor
+                                tint = if (currentScreen == Screen.Basket) DarkGreen else LightTextColor
                             )
                         }
                     },
                     label = {
                         Text(
                             "Корзина",
-                            color = if (currentScreen == Screen.Cart) DarkGreen else LightTextColor
+                            color = if (currentScreen == Screen.Basket) DarkGreen else LightTextColor
                         )
                     },
-                    selected = currentScreen == Screen.Cart,
-                    onClick = { currentScreen = Screen.Cart },
+                    selected = currentScreen == Screen.Basket,
+                    onClick = { currentScreen = Screen.Basket },
                     colors = NavigationBarItemDefaults.colors(
                         selectedIconColor = DarkGreen,
                         selectedTextColor = DarkGreen,
@@ -182,16 +187,30 @@ fun MainScreen(navController: NavController, onLogout: () -> Unit) {
                         )
                     }
                 }
-//                is Screen.Cart -> {
-//                    CartScreen(
-//                        cartItems = cartItems,
-//                        onRemoveItem = ::removeFromCart
-//                    )
-//                }
-//                is Screen.Profile -> {
-//                    ProfileScreen(
-//                        onLogoutClick = onLogout
-//                    )
+                is Screen.Basket -> {
+                    if (currentUserId == -1) {
+                        Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                            Text("Для оформления заказа войдите в систему")
+                        }
+                    } else {
+                        BasketScreen(
+                            cartItems = cartItems,
+                            currentUserId = currentUserId,
+                            onRemoveItem =  { flower ->
+                                cartItems = cartItems.filterNot { it.id == flower.id }
+                            },
+                            onOrderSuccess = {
+                                // Очищаем корзину после успешного заказа
+                                cartItems = emptyList()
+
+                            }
+                        )
+                    }
+                }
+                is Screen.Profile -> {
+                    ProfileScreen(
+                        onLogoutClick = onLogout
+                    )
              }
             }
         }
@@ -216,7 +235,7 @@ private fun EmptyState() {
 
 sealed class Screen {
     object Catalog : Screen()
-    object Cart : Screen()
+    object Basket : Screen()
     object Profile : Screen()
 }
 
