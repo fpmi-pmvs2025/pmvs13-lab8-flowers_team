@@ -59,7 +59,7 @@ fun AppNavigation() {
 
                     sharedPreferences.edit().putBoolean("isLoggedIn", false).apply()
                     navController.navigate(Screen.Login.route) {
-                        popUpTo(0) // Очистка всего back stack
+                        popUpTo(0)
                     }
                 })
         }
