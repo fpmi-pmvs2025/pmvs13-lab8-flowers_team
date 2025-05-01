@@ -7,7 +7,6 @@ import android.database.sqlite.SQLiteDatabase;
 import bsu.pi_13.flowers_team.data.db.DBHelper;
 
 public class UserRepository {
-
     private final SQLiteDatabase database;
 
     public UserRepository(SQLiteDatabase database) {
@@ -23,15 +22,13 @@ public class UserRepository {
                 null, null, null
         );
 
-        boolean result = cursor.getCount() > 0;
+        boolean result = cursor.moveToFirst();
         cursor.close();
         return result;
     }
 
     public boolean registerUser(String login, String password) {
-        if (login == null || password == null || login.isEmpty() || password.isEmpty()) {
-            return false;
-        }
+        if (login == null || password == null || login.isEmpty() || password.isEmpty()) return false;
 
         Cursor cursor = database.query(
                 DBHelper.TABLE_USERS,
@@ -41,19 +38,17 @@ public class UserRepository {
                 null, null, null
         );
 
-        boolean userExists = cursor.getCount() > 0;
+        boolean userExists = cursor.moveToFirst();
         cursor.close();
 
-        if (userExists) {
-            return false;
-        }
+        if (userExists) return false;
 
         ContentValues values = new ContentValues();
         values.put("login", login);
         values.put("password", password);
         values.put("role", "S");
 
-        return database.insert(DBHelper.TABLE_USERS, null, values) != -1L;
+        return database.insert(DBHelper.TABLE_USERS, null, values) != -1;
     }
 
     public String getUserLogin(int userId) {

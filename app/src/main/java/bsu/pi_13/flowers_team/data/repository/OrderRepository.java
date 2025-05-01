@@ -14,7 +14,6 @@ import bsu.pi_13.flowers_team.data.db.DBHelper;
 import bsu.pi_13.flowers_team.data.model.Order;
 import bsu.pi_13.flowers_team.data.model.OrderItem;
 
-
 public class OrderRepository {
     private final SQLiteDatabase database;
 
@@ -23,43 +22,27 @@ public class OrderRepository {
     }
 
     public long createOrder(int userId, double totalPrice) {
-        try {
-            ContentValues values = new ContentValues();
-            values.put("user_id", userId);
-            values.put("order_date", getCurrentDateTime());
-            values.put("total_price", totalPrice);
+        ContentValues values = new ContentValues();
+        values.put("user_id", userId);
+        values.put("order_date", getCurrentDateTime());
+        values.put("total_price", totalPrice);
 
-            return database.insert(DBHelper.TABLE_ORDERS, null, values);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return -1;
-        }
+        return database.insert(DBHelper.TABLE_ORDERS, null, values);
     }
 
     public boolean addOrderItem(long orderId, int flowerId, int quantity, double price) {
-        try {
-            ContentValues values = new ContentValues();
-            values.put("order_id", orderId);
-            values.put("flower_id", flowerId);
-            values.put("quantity", quantity);
-            values.put("price", price);
+        ContentValues values = new ContentValues();
+        values.put("order_id", orderId);
+        values.put("flower_id", flowerId);
+        values.put("quantity", quantity);
+        values.put("price", price);
 
-            return database.insert("order_items", null, values) != -1;
-        } catch (Exception e) {
-            e.printStackTrace();
-            return false;
-        }
-    }
-
-    private String getCurrentDateTime() {
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
-        return dateFormat.format(new Date());
+        return database.insert(DBHelper.TABLE_ORDER_ITEMS, null, values) != -1;
     }
 
     public List<Order> getOrdersByUserId(int userId) {
         List<Order> orders = new ArrayList<>();
 
-        // Запрос для получения заказов пользователя
         Cursor orderCursor = database.query(
                 DBHelper.TABLE_ORDERS,
                 new String[]{"id", "order_date", "total_price", "status"},
@@ -74,20 +57,12 @@ public class OrderRepository {
             double totalPrice = orderCursor.getDouble(2);
             String status = orderCursor.getString(3);
 
-            // Получаем элементы заказа
             List<OrderItem> items = getOrderItems(orderId);
 
-            orders.add(new Order(
-                    orderId,
-                    userId,
-                    orderDate,
-                    totalPrice,
-                    status,
-                    items
-            ));
+            orders.add(new Order(orderId, userId, orderDate, totalPrice, status, items));
         }
-        orderCursor.close();
 
+        orderCursor.close();
         return orders;
     }
 
@@ -95,7 +70,7 @@ public class OrderRepository {
         List<OrderItem> items = new ArrayList<>();
 
         Cursor itemCursor = database.query(
-                "order_items",
+                DBHelper.TABLE_ORDER_ITEMS,
                 new String[]{"flower_id", "quantity", "price"},
                 "order_id = ?",
                 new String[]{String.valueOf(orderId)},
@@ -109,8 +84,12 @@ public class OrderRepository {
 
             items.add(new OrderItem(orderId, flowerId, quantity, price));
         }
-        itemCursor.close();
 
+        itemCursor.close();
         return items;
+    }
+
+    private String getCurrentDateTime() {
+        return new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(new Date());
     }
 }

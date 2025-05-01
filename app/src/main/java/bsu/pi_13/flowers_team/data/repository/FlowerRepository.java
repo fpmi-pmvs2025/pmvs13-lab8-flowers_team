@@ -1,7 +1,5 @@
 package bsu.pi_13.flowers_team.data.repository;
 
-
-import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
@@ -20,9 +18,15 @@ public class FlowerRepository {
 
     public List<Flower> getAllFlowers() {
         List<Flower> flowers = new ArrayList<>();
+
         Cursor cursor = database.query(
                 DBHelper.TABLE_FLOWERS,
-                null, null, null, null, null, "name ASC"
+                null,
+                null,
+                null,
+                null,
+                null,
+                "name ASC"
         );
 
         if (cursor.moveToFirst()) {
@@ -36,6 +40,7 @@ public class FlowerRepository {
                 flowers.add(flower);
             } while (cursor.moveToNext());
         }
+
         cursor.close();
         return flowers;
     }
