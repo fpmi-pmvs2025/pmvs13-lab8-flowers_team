@@ -96,4 +96,7 @@ dependencies {
     androidTestImplementation (libs.androidx.espresso.core)
     androidTestImplementation (libs.ui.test.junit4)
     debugImplementation (libs.ui.test.manifest)
+
+    testImplementation ("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.7.3")
+
 }
