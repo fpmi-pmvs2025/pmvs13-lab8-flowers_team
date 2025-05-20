@@ -33,7 +33,7 @@ public class DBHelper extends SQLiteOpenHelper {
     private void createDatabaseIfNotExists() {
         File dbFile = new File(DB_PATH);
         if (!dbFile.exists()) {
-            getReadableDatabase(); // создаёт пустую базу, чтобы путь существовал
+            getReadableDatabase();
             copyDatabaseFromAssets();
         }
     }
