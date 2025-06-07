@@ -102,7 +102,8 @@ dependencies {
 
 configurations.all {
     resolutionStrategy {
-        force(   "org.bouncycastle:bcprov-jdk18on:1.78",
+        force(
+            "org.bouncycastle:bcprov-jdk18on:1.78",
             "io.netty:netty-handler:4.1.118.Final",
             "io.netty:netty-codec-http2:4.1.108.Final",
             "commons-io:commons-io:2.14.0",
@@ -111,6 +112,7 @@ configurations.all {
             "com.google.guava:guava:32.0.1-android",
             "org.apache.commons:commons-compress:1.26.0",
             "com.squareup.okio:okio:3.4.0",
-            "com.squareup.okio:okio-jvm:3.4.0")
+            "com.squareup.okio:okio-jvm:3.4.0"
+        )
     }
 }
