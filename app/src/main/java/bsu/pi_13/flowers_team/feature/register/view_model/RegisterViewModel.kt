@@ -16,7 +16,6 @@ class RegisterViewModel(
     private val sharedPreferences = context.getSharedPreferences("user_prefs", Context.MODE_PRIVATE)
     private val editor = sharedPreferences.edit()
 
-
     fun registerUser(onSuccess: () -> Unit) {
         if (login.isBlank() || password.isBlank()) {
             errorMessage = "Логин и пароль не могут быть пустыми"
@@ -31,9 +30,12 @@ class RegisterViewModel(
             val isRegistered = dbHelper.userRepository.registerUser(login, password)
 
             if (isRegistered) {
-                onSuccess()
+                val userId = dbHelper.userRepository.getUserIdByLogin(login)
                 editor.putBoolean("isLoggedIn", true)
+                editor.putInt("current_user_id", userId)
                 editor.apply()
+
+                onSuccess()
             } else {
                 errorMessage = "Пользователь с таким логином уже существует"
             }
